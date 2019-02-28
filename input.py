@@ -1,4 +1,5 @@
 import networkx as nx
+import make_pairs
 
 def find_solution():
     pass
@@ -33,7 +34,7 @@ def make_graph(photos):
 def read_input():
     t = int(input())
     photos = list()
-    for i in range(1, t + 1):
+    for i in range(0, t):
         orient, num, tags = [x for x in input().split(' ', 2)]
         tags = tags.split()
         if orient == 'H':
@@ -45,6 +46,8 @@ def read_input():
 
 def main():
     photos = read_input()
-    G = make_graph(photos)
+
+    # print(make_pairs.make_pairs_hash_table(photos))
+    # G = make_graph(photos)
 
 main()

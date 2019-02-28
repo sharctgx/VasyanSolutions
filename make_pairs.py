@@ -3,10 +3,10 @@ from itertools import combinations
 
 def calculate_score(lhs, rhs):
     score = min(len(lhs["tags"] - rhs["tags"]),
-                len(rhs["tags"] - lhs["tags"])
-                lhs["tags"].intersection(rhs["tags"])
+                len(rhs["tags"] - lhs["tags"]),
+                len(lhs["tags"].intersection(rhs["tags"]))
     )
-    
+
     return score
 
 def make_pairs_hash_table(photos):
@@ -18,8 +18,8 @@ def make_pairs_hash_table(photos):
 
     pair_score_dict = dict()  # only for photos, that have at least one tag in common
 
-    for tag, photos in tag_photos_dict.items():
-        for pair in combinations(photos, 2):
+    for tag, photos_for_tag in tag_photos_dict.items():
+        for pair in combinations(photos_for_tag, 2):
             pair_score_dict[pair] = calculate_score(photos[pair[0]], photos[pair[1]])
 
     return pair_score_dict

@@ -40,7 +40,7 @@ def get_sorted_edges(G):
     return sorted(edges, key=lambda x: x[2], reverse=True)
 
 
-def add_sorted_edges(G, edges, f):
+def add_sorted_edges(G, edges):
     for edge in edges:
         add_edge(G, *[x[0] for x in edge[:2]], weight=edge[-1])
         try:
@@ -67,19 +67,41 @@ def read_input():
     return photos
 
 
+def get_succession(edges):
+    res = [*edges[0]]
+    for e in edges:
+        if e[0] in res:
+            if e[0] == res[0]:
+                res = [e[1]] + res
+            else:
+                res += [e[1]]
+        elif e[1] in res:
+            if e[1] == res[0]:
+                res = [e[0]] + res
+            else:
+                res += [e[0]]
+    return res
+
+
 def main():
     photos = read_input()
+    print('making graph...')
     G = make_graph(photos)
     n = len(G.nodes())
     # print(n*(n-1)/2)
     # pprint(G.nodes(data=True))
+    print('sorting edges...')
     edges = get_sorted_edges(G)
+    print('adding edges...')
+    add_sorted_edges(G, edges)
     # for edge in edges:
     #     print(edge)
-    with open('out.txt', 'w') as f:
-        add_sorted_edges(G, edges, f)
     # pprint(G.edges())
-    dia = diameter(G)
-    print(dia)
+    print('getting succession...')
+    succession = get_succession(G.edges())
+    print('writing...')
+    with open('out.txt', 'w') as f:
+        f.write('\n'.join([str(x) for x in succession]))
+
 
 main()

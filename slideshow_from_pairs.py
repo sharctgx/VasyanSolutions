@@ -1,5 +1,6 @@
 def build_slideshow(pairs_dict):
 	sorted_pairs = sorted(pairs_dict, key=lambda x: pairs_dict[x], reverse=True)
+	sorted_pairs[:1000]
 	path = list(sorted_pairs.pop(0))
 	while True:
 		to_forget = -1

@@ -16,6 +16,10 @@ def add_node(G, tags, orient):
     return
 
 
+def add_edge(G, a, b):
+    G.add_edge(hash(a), hash(b), weight=0-count_interest(a, b))
+
+
 def make_graph(photos):
     G = nx.Graph()
     for tags in photos['h']:

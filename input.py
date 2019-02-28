@@ -1,4 +1,5 @@
 import networkx as nx
+from networkx.algorithms.distance_measures import diameter
 
 def find_solution():
     pass
@@ -44,7 +45,7 @@ def add_sorted_edges(G, edges):
         add_edge(G, *[x[0] for x in edge])
         if nx.find_cycle(G):
             G.remove_edge(*[x[0] for x in edge])
-    
+    return
 
 
 def read_input():
@@ -63,5 +64,7 @@ def read_input():
 def main():
     photos = read_input()
     G = make_graph(photos)
+    edges = get_sorted_edges(G)
+    diameter
 
 main()

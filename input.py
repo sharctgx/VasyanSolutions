@@ -37,9 +37,9 @@ def read_input():
         orient, num, tags = [x for x in input().split(' ', 2)]
         tags = tags.split()
         if orient == 'H':
-            photos.append({"num" : i, "is_horizontal" : True, "tags" : tags))
+            photos.append({"num" : i, "is_horizontal" : True, "tags" : tags})
         else:
-            photos.append({"num" : i, "is_horizontal" : False, "tags" : tags))
+            photos.append({"num" : i, "is_horizontal" : False, "tags" : tags})
     return photos
 
 

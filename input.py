@@ -1,5 +1,6 @@
 import networkx as nx
 from networkx.algorithms.distance_measures import diameter
+from pprint import pprint
 
 def find_solution():
     pass
@@ -12,22 +13,20 @@ def count_interest(a, b):
     return min([one, two, three])
 
 
-def add_node(G, tags, orient):
-    G.add_node(hash(' '.join(tags)), tags=tags, orient=orient)
+def add_node(G, photo):
+    G.add_node(photo['num'], tags=photo['tags'], orient=photo['is_horizontal'])
     return
 
 
-def add_edge(G, a, b):
-    G.add_edge(a[0], b[0], weight=0-count_interest(a[1], b[1]))
+def add_edge(G, a, b, weight=1):
+    G.add_edge(a, b, weight=0-weight)
     return
 
 
 def make_graph(photos):
     G = nx.Graph()
-    for tags in photos['h']:
-        add_node(G, tags, 'h')
-    for tags in photos['v']:
-        add_node(G, tags, 'v')
+    for photo in photos:
+        add_node(G, photo)
     return G
 
 
@@ -35,16 +34,22 @@ def get_sorted_edges(G):
     edges = []
     nodes = list(G.nodes(data=True))
     for x in range(len(nodes)):
-        for y in range(x, len(nodes)):
+        for y in range(x+1, len(nodes)):
             edges.append((nodes[x], nodes[y], count_interest(nodes[x][1], nodes[y][1])))
     return sorted(edges, key=lambda x: x[2], reverse=True)
 
 
-def add_sorted_edges(G, edges):
+def add_sorted_edges(G, edges, f):
     for edge in edges:
-        add_edge(G, *[x[0] for x in edge])
-        if nx.find_cycle(G):
-            G.remove_edge(*[x[0] for x in edge])
+        add_edge(G, *[x[0] for x in edge[:2]], weight=edge[-1])
+        try:
+            nx.find_cycle(G)
+            G.remove_edge(*[x[0] for x in edge[:2]])
+        except:
+            if G.degree(edge[0][0]) > 2 or G.degree(edge[1][0]) > 2:
+                G.remove_edge(*[x[0] for x in edge[:2]])
+            else:
+                continue
     return
 
 
@@ -64,7 +69,16 @@ def read_input():
 def main():
     photos = read_input()
     G = make_graph(photos)
+    n = len(G.nodes())
+    # print(n*(n-1)/2)
+    # pprint(G.nodes(data=True))
     edges = get_sorted_edges(G)
-    diameter
+    # for edge in edges:
+    #     print(edge)
+    with open('out.txt', 'w') as f:
+        add_sorted_edges(G, edges, f)
+    # pprint(G.edges())
+    dia = diameter(G)
+    print(dia)
 
 main()

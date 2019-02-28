@@ -4,28 +4,39 @@ def find_solution():
     pass
 
 
-def add_node(G, tags):
-    G.add_node(hash(' '.join(tags)) , {'tags': tags})
+def count_interest(a, b):
+    one = len(set(a['tags']) & set(b['tags']))
+    two = len(set(a['tags']) - set(b['tags']))
+    three = len(set(b['tags']) - set(a['tags']))
+    return min([one, two, three])
+
+
+def add_node(G, tags, orient):
+    G.add_node(hash(' '.join(tags)), tags= tags, orient= orient)
     return
 
 
 def make_graph(photos):
     G = nx.Graph()
-    for node in photos['h'] + photos['v']:
-        add_node(node)
-
+    for tags in photos['h']:
+        add_node(G, tags, 'h')
+    for tags in photos['v']:
+        add_node(G, tags, 'v')
+    return G
 
 
 def main():
-  t = int(input())
-  photos = {'v': [], 'h': []}
-  for i in range(1, t + 1):
-    orient, num, tags = [x for x in input().split(' ', 2)]
-    tags = tags.split()
-    if orient == 'H':
-        photos['h'].append(tags)
-    else:
-        photos['v'].append(tags)
+    t = int(input())
+    photos = {'v': [], 'h': []}
+    for i in range(1, t + 1):
+        orient, num, tags = [x for x in input().split(' ', 2)]
+        tags = tags.split()
+        if orient == 'H':
+            photos['h'].append(tags)
+        else:
+            photos['v'].append(tags)
+    G = make_graph(photos)
+    print(G.nodes(data=True))
     # print("Case #{}: {}".format(i, find_solution(n, p, tags)))
 
 main()

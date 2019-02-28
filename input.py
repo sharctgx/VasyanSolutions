@@ -25,7 +25,7 @@ def make_graph(photos):
     return G
 
 
-def main():
+def read_input():
     t = int(input())
     photos = {'v': [], 'h': []}
     for i in range(1, t + 1):
@@ -35,6 +35,11 @@ def main():
             photos['h'].append(tags)
         else:
             photos['v'].append(tags)
+    return photos
+
+
+def main():
+    photos = read_input()
     G = make_graph(photos)
     print(G.nodes(data=True))
     # print("Case #{}: {}".format(i, find_solution(n, p, tags)))

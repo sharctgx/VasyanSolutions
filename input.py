@@ -37,16 +37,14 @@ def read_input():
         orient, num, tags = [x for x in input().split(' ', 2)]
         tags = tags.split()
         if orient == 'H':
-            photos['h'].append(tags)
+            photos['h'].append(tuple(i, tags))
         else:
-            photos['v'].append(tags)
+            photos['v'].append(tuple(i, tags))
     return photos
 
 
 def main():
     photos = read_input()
     G = make_graph(photos)
-    print(get_sorted_edges(G))
-    # print("Case #{}: {}".format(i, find_solution(n, p, tags)))
 
 main()

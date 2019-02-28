@@ -30,16 +30,7 @@ def make_graph(photos):
     return G
 
 
-def get_sorted_edges(G):
-    edges = []
-    nodes = list(G.nodes(data=True))
-    for x in range(len(nodes)):
-        for y in range(x, len(nodes)):
-            edges.append((nodes[x], nodes[y], count_interest(nodes[x][1], nodes[y][1])))
-    return sorted(edges, key=lambda x: x[2], reverse=True)
-
-
-def main():
+def read_input():
     t = int(input())
     photos = {'v': [], 'h': []}
     for i in range(1, t + 1):
@@ -49,6 +40,11 @@ def main():
             photos['h'].append(tags)
         else:
             photos['v'].append(tags)
+    return photos
+
+
+def main():
+    photos = read_input()
     G = make_graph(photos)
     print(get_sorted_edges(G))
     # print("Case #{}: {}".format(i, find_solution(n, p, tags)))

@@ -12,12 +12,12 @@ def count_interest(a, b):
 
 
 def add_node(G, tags, orient):
-    G.add_node(hash(' '.join(tags)), tags= tags, orient= orient)
+    G.add_node(hash(' '.join(tags)), tags=tags, orient=orient)
     return
 
 
 def add_edge(G, a, b):
-    G.add_edge(hash(a[0]), hash(b[0]), weight=0-count_interest(a[1], b[1]))
+    G.add_edge(a[0], b[0], weight=0-count_interest(a[1], b[1]))
     return
 
 
@@ -28,6 +28,23 @@ def make_graph(photos):
     for tags in photos['v']:
         add_node(G, tags, 'v')
     return G
+
+
+def get_sorted_edges(G):
+    edges = []
+    nodes = list(G.nodes(data=True))
+    for x in range(len(nodes)):
+        for y in range(x, len(nodes)):
+            edges.append((nodes[x], nodes[y], count_interest(nodes[x][1], nodes[y][1])))
+    return sorted(edges, key=lambda x: x[2], reverse=True)
+
+
+def add_sorted_edges(G, edges):
+    for edge in edges:
+        add_edge(G, *[x[0] for x in edge])
+        if nx.find_cycle(G):
+            G.remove_edge(*[x[0] for x in edge])
+    
 
 
 def read_input():

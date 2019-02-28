@@ -1,4 +1,5 @@
 import networkx as nx
+import make_pairs
 from networkx.algorithms.distance_measures import diameter
 from pprint import pprint
 
@@ -56,7 +57,7 @@ def add_sorted_edges(G, edges):
 def read_input():
     t = int(input())
     photos = list()
-    for i in range(1, t + 1):
+    for i in range(0, t):
         orient, num, tags = [x for x in input().split(' ', 2)]
         tags = tags.split()
         if orient == 'H':
